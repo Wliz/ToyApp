@@ -25,4 +25,5 @@
 .idea/
 *.pid
 *.pid.lock
-
+# sring
+/spring/*.pid

@@ -26,5 +26,5 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
+  <<: *production
   database: my_ruby_heroku

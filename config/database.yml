@@ -15,6 +15,7 @@ production: &production
   timeout: 5000
   username: aexxwofzzgwfhr
   port: 5432
+  host: ec2-54-243-124-240.compute-1.amazonaws.com
   password: 4963d6940e0ab86d31cba81cdba65f11bffd20c850ac4871b96a87469c1aba2a
 
 development:

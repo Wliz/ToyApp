@@ -13,6 +13,9 @@ production: &production
   adapter: postgresql
   pool: 5
   timeout: 5000
+  username: aexxwofzzgwfhr
+  port: 5432
+  password: 4963d6940e0ab86d31cba81cdba65f11bffd20c850ac4871b96a87469c1aba2a
 
 development:
   <<: *default
@@ -27,4 +30,4 @@ test:
 
 production:
   <<: *production
-  database: my_ruby_heroku
+  database: d8jh4a47v99quq

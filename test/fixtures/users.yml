@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  name: MyString
-  email: MyString
-
-two:
-  name: MyString
-  email: MyString
+# 由于用户名字和邮箱验证导致固件失败，所以暂时隐藏
+#one:
+#  name: MyString
+#  email: MyString
+#
+#two:
+#  name: MyString
+#  email: MyString

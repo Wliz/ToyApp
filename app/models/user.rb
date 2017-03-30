@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+	attr_accessor :remember_token
 	# validates :name, presence: true
 	# 忽略大小写的email邮件地址正则表达式
 	VALID_EMAIL_REGEXP = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -14,9 +15,34 @@ class User < ApplicationRecord
 	# 用户密码确认
 	has_secure_password
 
+	# remember user to database
+	def remember
+		self.remember_token = User.new_token
+		# no valid
+		update_attribute(:remember_digest, User.digest(remember_token))
+	end
+	
+	# forget user to database
+	def forget
+		update_attribute(:remember_digest, nil)		
+	end
+
+	# authenticate user token, digest
+	def authenticated?(remember_token)
+		return false unless remember_digest
+		BCrypt::Password.new(remember_digest).is_password?(remember_token)
+	end
+
 	# return string hash
 	def User.digest(string)
 		cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
 		BCrypt::Password.create(string, cost: cost)
+	end
+
+	# return remember digest token
+	class << self
+		def new_token
+			SecureRandom.urlsafe_base64
+		end
 	end
 end

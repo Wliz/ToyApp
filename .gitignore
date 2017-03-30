@@ -27,3 +27,4 @@
 *.pid.lock
 # sring
 /spring/*.pid
+/bin/*

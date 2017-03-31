@@ -4,10 +4,10 @@ class User < ApplicationRecord
 	# 忽略大小写的email邮件地址正则表达式
 	VALID_EMAIL_REGEXP = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-	validates_presence_of :name, :email, :password
+	validates_presence_of :name, :email
 	validates :name, length: { maximum: 50 }
 	validates :email, length: { maximum: 255 }, format: VALID_EMAIL_REGEXP, uniqueness: { case_sensitive: false }
-	validates :password, length: { minimum: 6 }
+	validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
 	# 保存时全部转为小写
 	# before_save { self.email = email.downcase }

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
@@ -34,10 +34,10 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 # 分页
-gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'will_paginate'
 
-#bootstrap
+# bootstrap
 gem 'bootstrap-sass'
 
 group :development, :test do
@@ -48,24 +48,25 @@ group :development, :test do
 end
 
 group :test do
-	gem 'rails-controller-testing'
-	gem 'minitest-reporters'
-	gem 'guard'
-	gem 'guard-minitest'
+  gem 'guard'
+  gem 'guard-minitest'
+  gem 'minitest-reporters'
+  gem 'rails-controller-testing'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
+  gem 'rubocop', '~> 0.48.1'
+  gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :production do
-	gem 'pg'
+  gem 'pg'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

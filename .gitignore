@@ -27,4 +27,8 @@
 *.pid.lock
 # sring
 /spring/*.pid
-/bin/*
+coverage
+public/temp
+public/assets/
+.ruby-gemset
+bin

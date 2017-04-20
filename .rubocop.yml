@@ -521,6 +521,9 @@ Metrics/BlockNesting:
   Enabled: true
   Max: 9
 
+Metrics/BlockLength:
+  Enabled: false
+
 # Avoid classes longer than 100 lines of code.
 Metrics/ClassLength:
   Enabled: false

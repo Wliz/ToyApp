@@ -34,7 +34,7 @@ class User < ApplicationRecord
   # 保存时全部转为小写
   # before_save { self.email = email.downcase }
 
-  # 用户密码确认
+  # 用户密码确认，带有authenticate方法
   has_secure_password
 
   # remember user to database
@@ -49,12 +49,6 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, nil)
   end
 
-  # authenticate user token, digest
-  def authenticated?(remember_token)
-    return false unless remember_digest
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
-  end
-
   # return string hash
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
@@ -65,6 +59,21 @@ class User < ApplicationRecord
   class << self
     def new_token
       SecureRandom.urlsafe_base64
+    end
+  end
+
+  # 如果指定的令牌和摘要匹配true
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
+  end
+  
+  # 激活账户
+  def activate
+    transaction do
+      update_attributes!(activated: true, activated_at: Time.current)
+      rescue
     end
   end
 

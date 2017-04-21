@@ -37,6 +37,15 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  # 配置邮件发送
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method       = :test
+  host                                       = 'localhost:3000'
+  config.action_mailer.default_url_options   = {
+    host:     host,
+    protocol: 'http'
+  }
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

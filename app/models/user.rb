@@ -13,6 +13,8 @@
 #  activation_digest :string
 #  activated         :boolean          default(FALSE)
 #  activated_at      :datetime
+#  reset_digest      :string
+#  reset_send_at     :datetime
 #
 # Indexes
 #
@@ -20,7 +22,7 @@
 #
 
 class User < ApplicationRecord
-  attr_accessor :remember_token, :activation_token
+  attr_accessor :remember_token, :activation_token, :reset_token
   before_create :create_activation_digest
   # validates :name, presence: true
   # 忽略大小写的email邮件地址正则表达式
@@ -47,6 +49,10 @@ class User < ApplicationRecord
   # forget user to database
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  def password_reset_expired?
+    reset_send_at < 2.hours.ago
   end
 
   # return string hash
@@ -82,6 +88,21 @@ class User < ApplicationRecord
   # 发送激活邮件
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
+  end
+
+  # 设置密码重设相关的属性
+  def create_reset_digest
+    self.reset_token = User.new_token
+    transaction do
+      update_attributes!(reset_digest: User.digest(reset_token), reset_send_at: Time.current)
+    end
+  rescue => ex
+    logger.error "设置密码错误: #{ex.backtrace.join('\n')}"
+  end
+
+  # 发送密码重设邮件
+  def sent_password_reset_email
+    UserMailer.password_reset(self).deliver_now
   end
 
   private

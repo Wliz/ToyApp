@@ -68,13 +68,20 @@ class User < ApplicationRecord
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
   end
-  
+
   # 激活账户
   def activate
     transaction do
       update_attributes!(activated: true, activated_at: Time.current)
-      rescue
     end
+  rescue => ex
+    # 默认捕获StandardError异常信息，可以指定捕获的异常
+    logger.error "激活账户发生异常：#{ex.backtrace.join('\n')}"
+  end
+
+  # 发送激活邮件
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
   end
 
   private
@@ -82,7 +89,7 @@ class User < ApplicationRecord
   # 创建并赋值激活令牌和摘要
   def create_activation_digest
     # 为实例变量赋值需要使用self，获取其变量值不需要
-    self.activation_token = User.new_token
+    self.activation_token  = User.new_token
     self.activation_digest = User.digest(activation_token)
   end
 end

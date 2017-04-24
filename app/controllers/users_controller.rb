@@ -14,15 +14,13 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    redirect_to(root_url) && return unless @user.activated?
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
-      # log_in @user
-      UserMailer.account_activation(@user).deliver_now
-      # flash[:success] = 'Welcome to ToyApp！'
-      # redirect_to @user
+      @user.send_activation_email
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url
     else

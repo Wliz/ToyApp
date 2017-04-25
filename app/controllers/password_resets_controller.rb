@@ -13,10 +13,10 @@ class PasswordResetsController < ApplicationController
     if params[:user][:password].empty?
       @user.errors.add(:password, 'cant\'t be empty')
       render 'edit'
-    elsif @user.update_attributes!(user_params)
+    elsif @user.update_attributes(user_params)
       log_in @user
       # 重设密码后清除重设摘要
-      @user.update_attribute!(:reset_digest, nil)
+      @user.update_attribute(:reset_digest, nil)
       flash[:success] = 'Password has been reset.'
       redirect_to @user
     else
